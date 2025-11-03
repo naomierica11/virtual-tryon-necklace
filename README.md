@@ -1,4 +1,4 @@
-# 💎 Virtual Try-On: Necklace Edition
+ # 💎 Virtual Try-On: Necklace Edition
 
 Real-time virtual try-on system untuk kalung menggunakan webcam. Project ini menggabungkan **Godot 4** (rendering), **Python OpenCV** (face detection), dan **SVM + BoVW** (machine learning).
 
