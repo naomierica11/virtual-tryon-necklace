@@ -7,16 +7,27 @@ var idx := 0
 var textures: Array = []
 
 func _ready():
+	# Load textures
 	for n in names:
 		var t = load("res://assets/necklaces/%s.png" % n)
-		if t: textures.append(t)
+		if t: 
+			textures.append(t)
+		else:
+			print("WARNING: Failed to load texture: ", n)
+	
 	if textures.size() > 0:
 		spr.texture = textures[idx]
+		print("✓ Loaded ", textures.size(), " necklace textures")
+	else:
+		print("❌ No necklace textures loaded")
+	
 	spr.visible = false  # default sembunyi sampai ada face
 	set_process_input(true)
 
 func current_name() -> String:
-	return names[idx]
+	if idx >= 0 and idx < names.size():
+		return names[idx]
+	return "unknown"
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
@@ -30,7 +41,9 @@ func _input(event):
 			KEY_S: save_snapshot()
 
 func set_idx(i:int):
-	if textures.size() == 0: return
+	if textures.size() == 0: 
+		return
+	
 	idx = clamp(i, 0, textures.size()-1)
 	spr.texture = textures[idx]
 	print("Switched to necklace: ", names[idx])
@@ -46,12 +59,18 @@ func update_accessory(face: Array, angle: float, _frame_size: Vector2):
 
 	# Skala kalung - sekitar 45% dari lebar wajah
 	var w_target = fw * 0.45
-	var h_target = w_target * (float(spr.texture.get_height()) / float(spr.texture.get_width()))
+	var texture_width = float(spr.texture.get_width())
+	var texture_height = float(spr.texture.get_height())
+	
+	if texture_width == 0:  # Avoid division by zero
+		return
+		
+	var h_target = w_target * (texture_height / texture_width)
 
 	spr.rotation_degrees = angle
 	spr.scale = Vector2(
-		w_target / float(spr.texture.get_width()),
-		h_target / float(spr.texture.get_height())
+		w_target / texture_width,
+		h_target / texture_height
 	)
 
 	# Posisi kalung di leher (60% dari tinggi wajah)
@@ -61,14 +80,19 @@ func update_accessory(face: Array, angle: float, _frame_size: Vector2):
 	spr.position = Vector2(x, y)
 	spr.visible = true
 	
-	# Debug print setiap 30 frame
-	if Engine.get_frames_drawn() % 30 == 0:
-		print("Face: [%d,%d,%d,%d] | Necklace pos: (%.0f, %.0f) | Angle: %.1f" % [face[0], face[1], face[2], face[3], x, y, angle])
+	# Debug print setiap 60 frame untuk mengurangi spam
+	if Engine.get_frames_drawn() % 60 == 0:
+		print("Necklace updated - Face: [%d,%d,%d,%d] | Pos: (%.0f, %.0f) | Angle: %.1f" % [face[0], face[1], face[2], face[3], x, y, angle])
 
 func save_snapshot():
-	var img: Image = get_viewport().get_texture().get_image()
-	var datetime = Time.get_datetime_string_from_system().replace(":","-")
+	var viewport = get_viewport()
+	if viewport == null:
+		return
+		
+	var img: Image = viewport.get_texture().get_image()
+	var datetime = Time.get_datetime_string_from_system().replace(":","-").replace("T", "_")
 	var path = "user://snapshot_%s.png" % datetime
+	
 	if img.save_png(path) == OK:
 		print("✓ Snapshot saved: ", path)
 		# Print absolute path untuk mudah dicari
