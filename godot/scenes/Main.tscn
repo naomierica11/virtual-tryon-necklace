@@ -1,22 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://bdu0tseaseokl"]
+[gd_scene load_steps=4 format=3 uid="uid://bdu0tseaseokl"]
 
 [ext_resource type="Script" uid="uid://c63fyuma4urdd" path="res://scripts/VideoClient.gd" id="1_rvslj"]
 [ext_resource type="Script" uid="uid://b62dmrbgtam1u" path="res://scripts/AccessoryController.gd" id="2_0bbpv"]
+[ext_resource type="Texture2D" uid="uid://by3aimwoeae5f" path="res://assets/necklaces/n1.png" id="3_0bbpv"]
 
-[node name="Root" type="Node"]
+[node name="Root" type="Node2D"]
+
+[node name="VideoClient" type="Node" parent="."]
 script = ExtResource("1_rvslj")
 
-[node name="Video" type="TextureRect" parent="."]
+[node name="Video" type="TextureRect" parent="VideoClient"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-expand_mode = 2
-stretch_mode = 4
+expand_mode = 1
 
-[node name="Overlay" type="Node2D" parent="."]
+[node name="Overlay" type="Node2D" parent="VideoClient"]
 script = ExtResource("2_0bbpv")
 
-[node name="Necklace" type="Sprite2D" parent="Overlay"]
-z_index = 10
+[node name="Necklace" type="Sprite2D" parent="VideoClient/Overlay"]
+position = Vector2(648, 566)
+scale = Vector2(0.48369566, 0.48913044)
+texture = ExtResource("3_0bbpv")
