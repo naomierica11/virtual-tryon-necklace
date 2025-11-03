@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdu0tseaseokl"]
+
+[ext_resource type="Script" uid="uid://c63fyuma4urdd" path="res://scripts/VideoClient.gd" id="1_rvslj"]
+[ext_resource type="Script" uid="uid://b62dmrbgtam1u" path="res://scripts/AccessoryController.gd" id="2_0bbpv"]
+
+[node name="Root" type="Node"]
+script = ExtResource("1_rvslj")
+
+[node name="Video" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 2
+stretch_mode = 4
+
+[node name="Overlay" type="Node2D" parent="."]
+script = ExtResource("2_0bbpv")
+
+[node name="Necklace" type="Sprite2D" parent="Overlay"]
+z_index = 10
