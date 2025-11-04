@@ -6,6 +6,10 @@ var names = ["n1","n2","n3","n4","n5"]
 var idx := 0
 var textures: Array = []
 
+# Adjustable positioning
+var neck_offset_y := 0.85  # Posisi vertikal (0.0 = atas wajah, 1.0 = bawah wajah)
+var neck_offset_below := 0.05  # Offset tambahan di bawah wajah (dalam proporsi tinggi wajah)
+
 func _ready():
 	# Load textures
 	for n in names:
@@ -18,10 +22,11 @@ func _ready():
 	if textures.size() > 0:
 		spr.texture = textures[idx]
 		print("✓ Loaded ", textures.size(), " necklace textures")
+		print("  Controls: UP/DOWN = adjust position, 1-5 = change necklace, H = hide, S = snapshot")
 	else:
-		print("❌ No necklace textures loaded")
+		print("✗ No necklace textures loaded")
 	
-	spr.visible = false  # default sembunyi sampai ada face
+	spr.visible = false
 	set_process_input(true)
 
 func current_name() -> String:
@@ -39,6 +44,23 @@ func _input(event):
 			KEY_5, KEY_KP_5: set_idx(4)
 			KEY_H: visible = !visible
 			KEY_S: save_snapshot()
+			# Fine-tune position dengan arrow keys
+			KEY_UP:
+				neck_offset_y -= 0.05
+				neck_offset_y = clamp(neck_offset_y, 0.5, 1.2)
+				print("Neck Y offset: %.2f (UP = higher)" % neck_offset_y)
+			KEY_DOWN:
+				neck_offset_y += 0.05
+				neck_offset_y = clamp(neck_offset_y, 0.5, 1.2)
+				print("Neck Y offset: %.2f (DOWN = lower)" % neck_offset_y)
+			KEY_LEFT:
+				neck_offset_below -= 0.02
+				neck_offset_below = clamp(neck_offset_below, -0.1, 0.3)
+				print("Below face offset: %.2f" % neck_offset_below)
+			KEY_RIGHT:
+				neck_offset_below += 0.02
+				neck_offset_below = clamp(neck_offset_below, -0.1, 0.3)
+				print("Below face offset: %.2f" % neck_offset_below)
 
 func set_idx(i:int):
 	if textures.size() == 0: 
@@ -57,12 +79,12 @@ func update_accessory(face: Array, angle: float, _frame_size: Vector2):
 	var fw = float(face[2])
 	var fh = float(face[3])
 
-	# Skala kalung - sekitar 45% dari lebar wajah
-	var w_target = fw * 0.45
+	# Skala kalung - 55% dari lebar wajah
+	var w_target = fw * 0.55
 	var texture_width = float(spr.texture.get_width())
 	var texture_height = float(spr.texture.get_height())
 	
-	if texture_width == 0:  # Avoid division by zero
+	if texture_width == 0:
 		return
 		
 	var h_target = w_target * (texture_height / texture_width)
@@ -73,16 +95,25 @@ func update_accessory(face: Array, angle: float, _frame_size: Vector2):
 		h_target / texture_height
 	)
 
-	# Posisi kalung di leher (60% dari tinggi wajah)
+	# POSISI KALUNG - Area Leher
+	# X: Tengah wajah
 	var x = fx + fw / 2.0
-	var y = fy + fh * 0.60
+	
+	# Y: Menggunakan posisi dalam bounding box wajah + offset
+	# neck_offset_y = 0.85 berarti 85% dari tinggi wajah (sekitar area dagu bawah)
+	# Lalu tambah sedikit offset untuk turun ke area leher
+	var y = fy + (fh * neck_offset_y) + (fh * neck_offset_below)
 	
 	spr.position = Vector2(x, y)
 	spr.visible = true
 	
-	# Debug print setiap 60 frame untuk mengurangi spam
-	if Engine.get_frames_drawn() % 60 == 0:
-		print("Necklace updated - Face: [%d,%d,%d,%d] | Pos: (%.0f, %.0f) | Angle: %.1f" % [face[0], face[1], face[2], face[3], x, y, angle])
+	# Debug setiap 2 detik
+	if Engine.get_frames_drawn() % 120 == 0:
+		print("Necklace - Face[%d,%d,%d,%d] Pos:(%.0f,%.0f) Y%%:%.0f%%" % [
+			face[0], face[1], face[2], face[3], 
+			x, y,
+			neck_offset_y * 100
+		])
 
 func save_snapshot():
 	var viewport = get_viewport()
@@ -95,7 +126,6 @@ func save_snapshot():
 	
 	if img.save_png(path) == OK:
 		print("✓ Snapshot saved: ", path)
-		# Print absolute path untuk mudah dicari
 		print("  Full path: ", ProjectSettings.globalize_path(path))
 	else:
 		print("✗ Failed to save snapshot")
