@@ -1,7 +1,7 @@
 extends Control
 
 # Necklace info
-var necklace_names = ["Elegant Gold", "Silver Chain", "Pearl Classic", "Ruby Pendant", "Diamond Luxe"]
+var necklace_names = ["Pearl Classic", "Silver Chain", "Elegant Gold", "Ruby Pendant", "Diamond Luxe"]
 var current_idx = 0
 
 # UI References

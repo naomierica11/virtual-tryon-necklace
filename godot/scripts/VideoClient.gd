@@ -221,3 +221,7 @@ func _exit_tree():
 	if udp:
 		udp.close()
 	print("\nUDP client closed")
+
+
+func _on_exit_pressed() -> void:
+	pass # Replace with function body.

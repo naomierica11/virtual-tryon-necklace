@@ -1,11 +1,35 @@
-[gd_scene load_steps=5 format=3 uid="uid://bdu0tseaseokl"]
+[gd_scene load_steps=13 format=3 uid="uid://bdu0tseaseokl"]
 
 [ext_resource type="Script" uid="uid://c63fyuma4urdd" path="res://scripts/VideoClient.gd" id="1_rvslj"]
+[ext_resource type="Texture2D" uid="uid://byu4frq44yv4w" path="res://assets/ui/Assets/Backgound/Background_Blue.png" id="1_vcsgt"]
 [ext_resource type="Script" uid="uid://b62dmrbgtam1u" path="res://scripts/AccessoryController.gd" id="2_0bbpv"]
 [ext_resource type="Texture2D" uid="uid://by3aimwoeae5f" path="res://assets/necklaces/n1.png" id="3_0bbpv"]
 [ext_resource type="Script" uid="uid://bpb4xf0j7n8xs" path="res://scripts/UIController.gd" id="4_vcsgt"]
+[ext_resource type="Texture2D" uid="uid://cealhr3k546hw" path="res://assets/ui/Assets/Butterfly/Butterfly-1.png" id="6_nxtc6"]
+[ext_resource type="Texture2D" uid="uid://b8kaieamsx46a" path="res://assets/ui/Assets/Butterfly/Butterfly-7.png" id="7_jlsqs"]
+[ext_resource type="Texture2D" uid="uid://bi3ljtt7iod76" path="res://assets/ui/Assets/Bar/Big-bar.png" id="8_lhr70"]
+[ext_resource type="Texture2D" uid="uid://chh0pou08urki" path="res://assets/ui/Assets/Bar/Press-big-bar.png" id="9_wp0k4"]
+[ext_resource type="FontFile" uid="uid://5nvw7f83qamp" path="res://assets/ui/Font_Gluten/static/Gluten-Bold.ttf" id="10_bjd11"]
+[ext_resource type="Script" uid="uid://c7q7a520noy5w" path="res://scripts/exit.gd" id="10_wp0k4"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_qmy6f"]
+font = ExtResource("10_bjd11")
+font_size = 48
+font_color = Color(0.30980393, 0.09019608, 0.2627451, 1)
 
 [node name="Root" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1280.0
+offset_bottom = 720.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_vcsgt")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="VideoClient" type="Node" parent="."]
 script = ExtResource("1_rvslj")
@@ -30,3 +54,52 @@ texture = ExtResource("3_0bbpv")
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("4_vcsgt")
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+z_index = 999
+offset_left = 72.0
+offset_top = 44.0
+offset_right = 164.0
+offset_bottom = 143.0
+texture = ExtResource("6_nxtc6")
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+z_index = 999
+offset_left = 1102.0
+offset_top = 402.0
+offset_right = 1194.0
+offset_bottom = 501.0
+texture = ExtResource("7_jlsqs")
+
+[node name="exit" type="TextureButton" parent="."]
+z_index = 999
+offset_left = 895.0
+offset_top = 615.0
+offset_right = 1256.0
+offset_bottom = 697.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("8_lhr70")
+texture_hover = ExtResource("9_wp0k4")
+stretch_mode = 5
+script = ExtResource("10_wp0k4")
+
+[node name="Label3" type="Label" parent="exit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -21.5
+offset_right = 90.0
+offset_bottom = 21.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "EXIT"
+label_settings = SubResource("LabelSettings_qmy6f")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="exit" to="exit" method="_on_exit_pressed"]

@@ -1,0 +1,150 @@
+[gd_scene load_steps=12 format=3 uid="uid://y4fkj0nfmqs1"]
+
+[ext_resource type="Script" uid="uid://dyhi1in5ywy2h" path="res://scripts/main_menu.gd" id="1_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://ujw6ql7qys5l" path="res://assets/ui/Assets/Backgound/Background_pink.png" id="1_tbmy8"]
+[ext_resource type="FontFile" uid="uid://2kww0blygrm4" path="res://assets/ui/Font_Gluten/static/Gluten-Medium.ttf" id="2_jk1qb"]
+[ext_resource type="Texture2D" uid="uid://bi3ljtt7iod76" path="res://assets/ui/Assets/Bar/Big-bar.png" id="3_5dd4i"]
+[ext_resource type="Texture2D" uid="uid://chh0pou08urki" path="res://assets/ui/Assets/Bar/Press-big-bar.png" id="4_lgwnu"]
+[ext_resource type="FontFile" uid="uid://5nvw7f83qamp" path="res://assets/ui/Font_Gluten/static/Gluten-Bold.ttf" id="5_flqon"]
+[ext_resource type="Texture2D" uid="uid://cdas73drba0k8" path="res://assets/ui/Assets/Butterfly/Butterfly-4.png" id="6_rcqid"]
+[ext_resource type="Texture2D" uid="uid://3lnlx60k5dx0" path="res://assets/ui/Assets/Butterfly/Butterfly-6.png" id="7_1ajci"]
+[ext_resource type="Texture2D" uid="uid://cwufipjnpe2jx" path="res://assets/ui/Assets/Butterfly/Butterfly-8.png" id="8_7b55j"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5pajh"]
+font = ExtResource("2_jk1qb")
+font_size = 72
+font_color = Color(0.30980393, 0.09019608, 0.2627451, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_j7ex8"]
+font = ExtResource("5_flqon")
+font_size = 48
+font_color = Color(0.30980393, 0.09019608, 0.2627451, 1)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_jk1qb")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+texture = ExtResource("1_tbmy8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Try-On Aksesoris Leher"
+label_settings = SubResource("LabelSettings_5pajh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="start" type="TextureButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_5dd4i")
+texture_hover = ExtResource("4_lgwnu")
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/start"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "START"
+label_settings = SubResource("LabelSettings_j7ex8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="exit" type="TextureButton" parent="MarginContainer/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture_normal = ExtResource("3_5dd4i")
+texture_hover = ExtResource("4_lgwnu")
+stretch_mode = 5
+
+[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer/exit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -21.5
+offset_right = 90.0
+offset_bottom = 21.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "EXIT"
+label_settings = SubResource("LabelSettings_j7ex8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 129.0
+offset_right = 239.0
+offset_bottom = 206.0
+texture = ExtResource("6_rcqid")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 555.0
+offset_right = 562.0
+offset_bottom = 632.0
+texture = ExtResource("7_1ajci")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextureRect4" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1039.0
+offset_top = 145.0
+offset_right = 1194.0
+offset_bottom = 222.0
+texture = ExtResource("8_7b55j")
+expand_mode = 1
+stretch_mode = 5
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/VBoxContainer/exit" to="." method="_on_exit_pressed"]

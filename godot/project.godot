@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="VTO-Necklace"
-run/main_scene="res://scenes/Main.tscn"
+run/main_scene="uid://y4fkj0nfmqs1"
 config/features=PackedStringArray("4.5")
 
 [display]
