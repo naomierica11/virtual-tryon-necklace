@@ -22,45 +22,16 @@ func _ready():
 	if textures.size() > 0:
 		spr.texture = textures[idx]
 		print("✓ Loaded ", textures.size(), " necklace textures")
-		print("  Controls: UP/DOWN = adjust position, 1-5 = change necklace, H = hide, S = snapshot")
 	else:
 		print("✗ No necklace textures loaded")
 	
 	spr.visible = false
-	set_process_input(true)
+	# HAPUS BARIS INI: set_process_input(true) - biar UIController yang handle input
 
 func current_name() -> String:
 	if idx >= 0 and idx < names.size():
 		return names[idx]
 	return "unknown"
-
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		match event.keycode:
-			KEY_1, KEY_KP_1: set_idx(0)
-			KEY_2, KEY_KP_2: set_idx(1)
-			KEY_3, KEY_KP_3: set_idx(2)
-			KEY_4, KEY_KP_4: set_idx(3)
-			KEY_5, KEY_KP_5: set_idx(4)
-			KEY_H: visible = !visible
-			KEY_S: save_snapshot()
-			# Fine-tune position dengan arrow keys
-			KEY_UP:
-				neck_offset_y -= 0.05
-				neck_offset_y = clamp(neck_offset_y, 0.5, 1.2)
-				print("Neck Y offset: %.2f (UP = higher)" % neck_offset_y)
-			KEY_DOWN:
-				neck_offset_y += 0.05
-				neck_offset_y = clamp(neck_offset_y, 0.5, 1.2)
-				print("Neck Y offset: %.2f (DOWN = lower)" % neck_offset_y)
-			KEY_LEFT:
-				neck_offset_below -= 0.02
-				neck_offset_below = clamp(neck_offset_below, -0.1, 0.3)
-				print("Below face offset: %.2f" % neck_offset_below)
-			KEY_RIGHT:
-				neck_offset_below += 0.02
-				neck_offset_below = clamp(neck_offset_below, -0.1, 0.3)
-				print("Below face offset: %.2f" % neck_offset_below)
 
 func set_idx(i:int):
 	if textures.size() == 0: 
@@ -115,17 +86,30 @@ func update_accessory(face: Array, angle: float, _frame_size: Vector2):
 			neck_offset_y * 100
 		])
 
-func save_snapshot():
+func save_snapshot() -> String:
 	var viewport = get_viewport()
 	if viewport == null:
-		return
-		
+		return ""
+	
 	var img: Image = viewport.get_texture().get_image()
-	var datetime = Time.get_datetime_string_from_system().replace(":","-").replace("T", "_")
-	var path = "user://snapshot_%s.png" % datetime
+	if img == null:
+		return ""
+	
+	# SIMPAN DI FOLDER PROJECT (lebih mudah dicari)
+	var datetime = Time.get_datetime_string_from_system()
+	datetime = datetime.replace(":", "-").replace("T", "_").replace("-", "")
+	var path = "res://screenshots/snapshot_%s.png" % datetime
+	
+	# Buat folder screenshots jika belum ada
+	var dir = DirAccess.open("res://")
+	if not dir.dir_exists("screenshots"):
+		dir.make_dir("screenshots")
 	
 	if img.save_png(path) == OK:
-		print("✓ Snapshot saved: ", path)
-		print("  Full path: ", ProjectSettings.globalize_path(path))
+		var full_path = ProjectSettings.globalize_path(path)
+		print("✅ SNAPSHOT SAVED TO PROJECT FOLDER!")
+		print("📁 Location: ", full_path)
+		return path
 	else:
-		print("✗ Failed to save snapshot")
+		print("❌ FAILED TO SAVE SNAPSHOT")
+		return ""
